@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // react-router-dom components
 import { Link } from "react-router-dom";
@@ -33,15 +33,65 @@ import CoverLayout from "layouts/authentication/components/CoverLayout";
 // Images
 import curved9 from "assets/images/curved-images/curved-6.jpg";
 
-function SignIn() {
-  const [rememberMe, setRememberMe] = useState(true);
+//Axios
+import axios from "axios";
+import CONFIG from "../../../config/site.config";
 
-  const handleSetRememberMe = () => setRememberMe(!rememberMe);
+function SignIn({history}) {
+  const [rememberMe, setRememberMe] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSetRememberMe = () => {
+    setRememberMe(!rememberMe);
+  }
+
+  useEffect(() => {
+    const remenber = () => {
+      if(rememberMe === true){
+        if(email.length > 0 && password.length > 0){
+          let user = {
+            email: email,
+            password: password
+          }
+          localStorage.setItem("user", JSON.stringify(user));
+        }else {
+          alert("Please fill in the email and password fields");
+          setRememberMe(false);
+        }
+      }else if(rememberMe === false){
+        localStorage.removeItem("user");
+      }
+    }
+    remenber();
+  }, [rememberMe]);
+
+  const handleChangeEmail = (event) => {
+    setEmail(event.target.value);
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const user = {
+      email,
+      password,
+    };
+
+    axios.post(CONFIG.url_api + "/user/login", user).then((res) => {
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", res.data.user);
+    }).catch((err) => {
+      console.log(err);
+    }).finally(() => {
+      history.push("/dashboard/home");
+    });
+  }
 
   return (
     <CoverLayout
-      title="Welcome back"
-      description="Enter your email and password to sign in"
+      title="Bem Vindo!"
+      description="Entre com seu email e senha para acessar o sistema."
       image={curved9}
     >
       <SoftBox component="form" role="form">
@@ -51,15 +101,15 @@ function SignIn() {
               Email
             </SoftTypography>
           </SoftBox>
-          <SoftInput type="email" placeholder="Email" />
+          <input type="email" placeholder="Email" value={email} onChange={(e) => handleChangeEmail(e)} />
         </SoftBox>
         <SoftBox mb={2}>
           <SoftBox mb={1} ml={0.5}>
             <SoftTypography component="label" variant="caption" fontWeight="bold">
-              Password
+              Senha
             </SoftTypography>
           </SoftBox>
-          <SoftInput type="password" placeholder="Password" />
+          <input type="password" placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} />
         </SoftBox>
         <SoftBox display="flex" alignItems="center">
           <Switch checked={rememberMe} onChange={handleSetRememberMe} />
@@ -73,8 +123,8 @@ function SignIn() {
           </SoftTypography>
         </SoftBox>
         <SoftBox mt={4} mb={1}>
-          <SoftButton variant="gradient" color="info" fullWidth>
-            sign in
+          <SoftButton variant="gradient" color="info" onClick={handleSubmit} fullWidth>
+            Entrar
           </SoftButton>
         </SoftBox>
         <SoftBox mt={3} textAlign="center">
