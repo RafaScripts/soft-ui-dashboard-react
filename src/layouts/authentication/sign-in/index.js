@@ -13,13 +13,14 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 // react-router-dom components
 import { Link } from "react-router-dom";
 
 // @mui material components
 import Switch from "@mui/material/Switch";
+import TextField from '@mui/material/TextField';
 
 // Soft UI Dashboard React components
 import SoftBox from "components/SoftBox";
@@ -36,11 +37,13 @@ import curved9 from "assets/images/curved-images/curved-6.jpg";
 //Axios
 import axios from "axios";
 import CONFIG from "../../../config/site.config";
+import {PublicRoutes} from "../../../config/siteConstantsRoutes";
 
 function SignIn({history}) {
   const [rememberMe, setRememberMe] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [dataRemenberMe, setDataRemenberMe] = useState([]);
 
   const handleSetRememberMe = () => {
     setRememberMe(!rememberMe);
@@ -64,13 +67,24 @@ function SignIn({history}) {
       }
     }
     remenber();
+    //dataremenber();
   }, [rememberMe]);
+
+  /*const dataremenber = useCallback(() => {
+    const data = localStorage.getItem("user");
+    if(data){
+      setDataRemenberMe(JSON.parse(data));
+
+      setEmail(dataRemenberMe[0].email);
+      setPassword(dataRemenberMe[0].password);
+    }
+  }, [dataRemenberMe]);*/
 
   const handleChangeEmail = (event) => {
     setEmail(event.target.value);
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const user = {
@@ -78,13 +92,15 @@ function SignIn({history}) {
       password,
     };
 
-    axios.post(CONFIG.url_api + "/user/login", user).then((res) => {
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", res.data.user);
+    await axios.post(CONFIG.url_api + "/users/signin", user).then(async (res) => {
+      await localStorage.setItem("token", res.data.token);
+      await localStorage.setItem("loggedin", JSON.stringify(res.data));
+      document.location.pathname = PublicRoutes.dashboard;
     }).catch((err) => {
       console.log(err);
+      //alert(JSON.stringify(err));
     }).finally(() => {
-      history.push("/dashboard/home");
+      //history.push("/dashboard/home");
     });
   }
 
@@ -101,7 +117,8 @@ function SignIn({history}) {
               Email
             </SoftTypography>
           </SoftBox>
-          <input type="email" placeholder="Email" value={email} onChange={(e) => handleChangeEmail(e)} />
+          <TextField fullWidth id="outlined-basic" label="Email" variant="outlined" value={email} onChange={(e) => handleChangeEmail(e)} />
+          {/*<input type="email" placeholder="Email" value={email} onChange={(e) => handleChangeEmail(e)} />*/}
         </SoftBox>
         <SoftBox mb={2}>
           <SoftBox mb={1} ml={0.5}>
@@ -109,7 +126,8 @@ function SignIn({history}) {
               Senha
             </SoftTypography>
           </SoftBox>
-          <input type="password" placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <TextField fullWidth id="outlined-basic" label="Senha" variant="outlined" value={password} onChange={(e) => setPassword(e.target.value)} />
+          {/*<input type="password" placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} />*/}
         </SoftBox>
         <SoftBox display="flex" alignItems="center">
           <Switch checked={rememberMe} onChange={handleSetRememberMe} />

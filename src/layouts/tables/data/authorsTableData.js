@@ -41,7 +41,17 @@ function Function({ job, org }) {
   );
 }
 
-const authorsTableData = {
+const pacientTableData = {
+  columns: [
+    { name: "Nome", align: 'left' },
+    { name: "Retorno", align: 'left' },
+    { name: "Cadastrado", align: 'center' },
+    { name: "Contato", align: 'center' },
+    { name: "Ações", align: 'center' },
+    ]
+}
+
+/*const authorsTableData = {
   columns: [
     { name: "author", align: "left" },
     { name: "function", align: "left" },
@@ -190,6 +200,6 @@ const authorsTableData = {
       ),
     },
   ],
-};
+};*/
 
-export default authorsTableData;
+export default pacientTableData;

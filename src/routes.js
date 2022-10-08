@@ -58,7 +58,7 @@ import Cube from "examples/Icons/Cube";
 const routes = [
   {
     type: "collapse",
-    name: "Dashboard",
+    name: "Home",
     key: "dashboard",
     route: "/dashboard",
     icon: <Shop size="12px" />,
@@ -67,14 +67,14 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Tables",
+    name: "Pacientes",
     key: "tables",
     route: "/tables",
     icon: <Office size="12px" />,
     component: <Tables />,
     noCollapse: true,
   },
-  {
+  /*{
     type: "collapse",
     name: "Billing",
     key: "billing",
@@ -82,8 +82,8 @@ const routes = [
     icon: <CreditCard size="12px" />,
     component: <Billing />,
     noCollapse: true,
-  },
-  {
+  },*/
+  /*{
     type: "collapse",
     name: "Virtual Reality",
     key: "virtual-reality",
@@ -91,8 +91,8 @@ const routes = [
     icon: <Cube size="12px" />,
     component: <VirtualReality />,
     noCollapse: true,
-  },
-  {
+  },*/
+  /*{
     type: "collapse",
     name: "RTL",
     key: "rtl",
@@ -101,7 +101,12 @@ const routes = [
     component: <RTL />,
     noCollapse: true,
   },
-  { type: "title", title: "Account Pages", key: "account-pages" },
+  { type: "title", title: "Account Pages", key: "account-pages" },*/
+  {
+    type: "title",
+    title: "Usuarios e Perfil",
+    key: "account-pages",
+  },
   {
     type: "collapse",
     name: "Profile",
@@ -115,16 +120,16 @@ const routes = [
     type: "collapse",
     name: "Sign In",
     key: "sign-in",
-    route: "/authentication/sign-in",
+    route: "/sing-in",
     icon: <Document size="12px" />,
     component: <SignIn />,
     noCollapse: true,
   },
   {
     type: "collapse",
-    name: "Sign Up",
+    name: "Cadastro",
     key: "sign-up",
-    route: "/authentication/sign-up",
+    route: "/sign-up",
     icon: <SpaceShip size="12px" />,
     component: <SignUp />,
     noCollapse: true,

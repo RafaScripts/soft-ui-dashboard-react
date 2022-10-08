@@ -1,3 +1,3 @@
 export default {
-  url_api: 'http://localhost:3000/api/V1',
+  url_api: 'http://localhost:3333/api/v1',
 }

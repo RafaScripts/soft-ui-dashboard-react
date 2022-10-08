@@ -49,7 +49,12 @@ function Dashboard() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <SoftBox py={3}>
+      <SoftBox py={3} >
+        <SoftBox mb={3} >
+          <h3>Em desenvolvimento...</h3>
+        </SoftBox>
+      </SoftBox>
+      {/*<SoftBox py={3}>
         <SoftBox mb={3}>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6} xl={3}>
@@ -143,7 +148,7 @@ function Dashboard() {
             <OrderOverview />
           </Grid>
         </Grid>
-      </SoftBox>
+      </SoftBox>*/}
       <Footer />
     </DashboardLayout>
   );
